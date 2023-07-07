@@ -1,0 +1,26 @@
+[30-May-2022 13:23:01 UTC] PHP Warning:  fopen(a.txt): failed to open stream: No such file or directory in /home3/votivelaravel/public_html/roadNstays/mail.php on line 13
+[30-May-2022 13:23:01 UTC] PHP Warning:  curl_setopt(): supplied argument is not a valid File-Handle resource in /home3/votivelaravel/public_html/roadNstays/mail.php on line 17
+[23-Feb-2023 05:22:20 UTC] PHP Warning:  file_get_contents(/tmp/adminer.version): Failed to open stream: Permission denied in /home3/votivjhg/public_html/snowglobelcities/adminer.php on line 526
+[23-Feb-2023 05:22:20 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home3/votivjhg/public_html/snowglobelcities/adminer.php on line 535
+[23-Feb-2023 05:22:20 UTC] PHP Warning:  Trying to access array offset on value of type bool in /home3/votivjhg/public_html/snowglobelcities/adminer.php on line 535
+[01-Mar-2023 11:52:54 UTC] PHP Warning:  Undefined variable $dg in /home3/votivjhg/public_html/snowglobelcities/adminer.php on line 868
+[01-Mar-2023 11:52:54 UTC] PHP Warning:  Undefined variable $dg in /home3/votivjhg/public_html/snowglobelcities/adminer.php on line 868
+[01-Mar-2023 11:52:54 UTC] PHP Warning:  Undefined variable $dg in /home3/votivjhg/public_html/snowglobelcities/adminer.php on line 868
+[01-Mar-2023 11:52:54 UTC] PHP Warning:  Undefined variable $dg in /home3/votivjhg/public_html/snowglobelcities/adminer.php on line 868
+[01-Mar-2023 11:52:54 UTC] PHP Warning:  Undefined variable $dg in /home3/votivjhg/public_html/snowglobelcities/adminer.php on line 868
+[01-Mar-2023 11:52:54 UTC] PHP Warning:  Undefined variable $dg in /home3/votivjhg/public_html/snowglobelcities/adminer.php on line 868
+[01-Mar-2023 11:52:54 UTC] PHP Warning:  Undefined variable $dg in /home3/votivjhg/public_html/snowglobelcities/adminer.php on line 868
+[01-Mar-2023 11:53:22 UTC] PHP Warning:  Undefined variable $dg in /home3/votivjhg/public_html/snowglobelcities/adminer.php on line 868
+[01-Mar-2023 11:53:22 UTC] PHP Warning:  Undefined variable $dg in /home3/votivjhg/public_html/snowglobelcities/adminer.php on line 868
+[01-Mar-2023 11:53:22 UTC] PHP Warning:  Undefined variable $dg in /home3/votivjhg/public_html/snowglobelcities/adminer.php on line 868
+[01-Mar-2023 11:53:22 UTC] PHP Warning:  Undefined variable $dg in /home3/votivjhg/public_html/snowglobelcities/adminer.php on line 868
+[01-Mar-2023 11:53:22 UTC] PHP Warning:  Undefined variable $dg in /home3/votivjhg/public_html/snowglobelcities/adminer.php on line 868
+[01-Mar-2023 11:53:22 UTC] PHP Warning:  Undefined variable $dg in /home3/votivjhg/public_html/snowglobelcities/adminer.php on line 868
+[01-Mar-2023 11:53:22 UTC] PHP Warning:  Undefined variable $dg in /home3/votivjhg/public_html/snowglobelcities/adminer.php on line 868
+[22-May-2023 09:47:44 UTC] PHP Warning:  Undefined variable $dg in /home3/votivjhg/public_html/snowglobelcities/adminer.php on line 868
+[22-May-2023 09:47:44 UTC] PHP Warning:  Undefined variable $dg in /home3/votivjhg/public_html/snowglobelcities/adminer.php on line 868
+[22-May-2023 09:47:44 UTC] PHP Warning:  Undefined variable $dg in /home3/votivjhg/public_html/snowglobelcities/adminer.php on line 868
+[22-May-2023 09:47:44 UTC] PHP Warning:  Undefined variable $dg in /home3/votivjhg/public_html/snowglobelcities/adminer.php on line 868
+[22-May-2023 09:47:44 UTC] PHP Warning:  Undefined variable $dg in /home3/votivjhg/public_html/snowglobelcities/adminer.php on line 868
+[22-May-2023 09:47:44 UTC] PHP Warning:  Undefined variable $dg in /home3/votivjhg/public_html/snowglobelcities/adminer.php on line 868
+[22-May-2023 09:47:44 UTC] PHP Warning:  Undefined variable $dg in /home3/votivjhg/public_html/snowglobelcities/adminer.php on line 868
