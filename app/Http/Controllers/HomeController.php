@@ -39,6 +39,8 @@ class HomeController extends Controller
         $data['ourteam'] = DB::table('pages')->where('type','teamts')->first();
         $data['ourteams'] = DB::table('pages')->where('type','team')->get();
         $data['faqs'] = DB::table('pages')->where('type','faq')->get();
+        $data['pages'] = DB::table('pages')->where('type','cms')->where('status','1')->get();
+
         return view('front/index')->with($data);
     }
 
@@ -447,23 +449,39 @@ class HomeController extends Controller
     {
         $data['page_info'] = DB::table('home_page')->where('id',1)->first();
         $data['landing'] = DB::table('home_page')->where('id',2)->first();
-
+        $data['pages'] = DB::table('pages')->where('type','cms')->where('status','1')->get();
         $pageurl = $request->pageurl;
-
-        if($pageurl == 'terms-condition'){
-            $data['page_content'] = DB::table('pages')->where('slug','terms-condition')->first();
+        $data['page_content'] = DB::table('pages')->where('page_url',$pageurl)->first();
+        // if($pageurl == 'terms-condition'){
+        //     $data['page_content'] = DB::table('pages')->where('slug','terms-condition')->first();
             
-        }
+        // }
 
-        if($pageurl == 'privacy-policy'){
-            $data['page_content'] = DB::table('pages')->where('slug','privacy-policy')->first();
+        // if($pageurl == 'privacy-policy'){
+        //     $data['page_content'] = DB::table('pages')->where('slug','privacy-policy')->first();
             
-        }
+        // }
 
-        if($pageurl == 'about-us'){
-            $data['page_content'] = DB::table('pages')->where('slug','about-us')->first();
+        // if($pageurl == 'about-us'){
+        //     $data['page_content'] = DB::table('pages')->where('slug','about-us')->first();
             
-        }
+        // }
+
+        // if($pageurl == 'contact-us'){
+        //     $data['page_content'] = DB::table('pages')->where('slug','contact-us')->first();
+            
+        // }   
+
+        // if($pageurl == 'faq'){
+        //     $data['page_content'] = DB::table('pages')->where('slug','faq')->first();
+            
+        // } 
+
+        // if($pageurl == 'faq'){
+        //     $data['page_content'] = DB::table('pages')->where('slug','faq')->first();
+            
+        // }    
+
         
         return view('front/page')->with($data);
         // $data['ourmission'] = DB::table('pages')->where('type','mission')->first();

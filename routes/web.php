@@ -6,6 +6,8 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ScoutController;
 use App\Http\Controllers\Scout\ScoutUserController;
 use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\AdminController;
+
 
 Route::get('/clear', function () {
     $exitCode = Artisan::call('view:clear', []);   
@@ -135,8 +137,16 @@ Route::group(['prefix' => 'admin'], function(){
         Route::any('/help_notification_update', 'App\Http\Controllers\AdminController@help_update');
         Route::get('/change_help_status', 'App\Http\Controllers\AdminController@help_status');
         Route::any('/delete_help', 'App\Http\Controllers\AdminController@delete_help');
-
         
+        Route::get('/car_categories', [AdminController::class, 'addCategories'])->name('car_categories');
+        Route::post('/post_categories', [AdminController::class, 'postCategory'])->name('post_categories');
+        Route::get('/add_menus', [AdminController::class, 'add_menus'])->name('add_menus');
+        Route::get('/booking_management', [AdminController::class, 'booking_management'])->name('booking_management');
+        Route::post('/change_booking_status', [AdminController::class, 'change_booking_status'])->name('change_booking_status');
+        Route::get('/view_booking/{id}', [AdminController::class, 'view_booking'])->name('view_booking');
+        Route::get('/car_management', [AdminController::class, 'car_management'])->name('car_management');
+        Route::get('/add_cars', [AdminController::class, 'add_cars'])->name('add_cars');
+        Route::post('/submit_cars', [AdminController::class, 'submit_cars'])->name('submit_cars');
     });
 });
 

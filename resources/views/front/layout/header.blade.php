@@ -1,55 +1,27 @@
-<!-- ======= Header ======= -->
-<header id="header" class="fixed-top">
-  <div class="container d-flex align-items-center justify-content-center">
-
-    <!-- <h1 class="logo mr-auto">
-      <a href="{{ url('/') }}"></a></h1> -->
-  <a href="{{ url('/') }}" class="logo mr-auto"><img src="{{ asset('resources/assets/img/road-logo.png')}}" alt="" class="img-fluid"></a>
-
-    <nav class="nav-menu d-none d-lg-block">
-      <ul>
-         <li class="drop-down"><a href="">Services</a>
-          <ul>
-            <li><a href="#">Drop Down 1</a></li>
-            <li class="drop-down"><a href="#">Deep Drop Down</a>
-           <!--    <ul>
-                <li><a href="#">Deep Drop Down 1</a></li>
-                <li><a href="#">Deep Drop Down 2</a></li>
-                <li><a href="#">Deep Drop Down 3</a></li>
-                <li><a href="#">Deep Drop Down 4</a></li>
-                <li><a href="#">Deep Drop Down 5</a></li>
-              </ul> -->
-            </li>
-            <li><a href="#">Booking</a></li>
-            <li><a href="#">Drop Down 3</a></li>
-            <li><a href="#">Drop Down 4</a></li>
-          </ul>
-        </li>
-        <li><a href="#">Booking</a></li>
-        <li><a href="#">Stays</a></li>
-        <li><a href="#">Event</a></li>
-         <li><a href="#">Packages</a></li>
-        <li><a href="#">Weather</a></li>
-        <li><a href="#">Hotel</a></li>
-        <li><a href="#">Tour</a></li>
-
-      </ul>
-    </nav>
-
-
-    @if(Auth::check())
-      @if(Auth::user()->user_type == "normal_user")
-        <!-- Auth::check() -->
-        <!-- Auth::gaurd('user') -->
-        <a href="{{ route('user.logout') }}" class="get-started-btn">Logout </a>
-      @elseif(Auth::user()->user_type == "service_provider")
-        <a href="{{ route('servicepro.logout') }}" class="get-started-btn">Logout </a>
-      @else
-      @endif
-    @else
-      <a href="" data-toggle="modal" data-target="#exampleModal" class="get-started-btn">SIGN UP</a>
-    @endif
-
-    
-  </div>
-</header>
+<!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
+            <div class="container px-4 px-lg-5 logo-new">
+                <?php $home_logo = $page_info->home_logo; ?>
+                <a class="navbar-brand" href="index.html"><img src="{{ asset('public/uploads/')}}/{{$home_logo}}"></a>
+                <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ms-auto my-2 my-lg-0">
+                        <li class="nav-item"><a class="nav-link current" href="#">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Rent</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Share</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Ride</a></li>
+                    </ul>
+          <div class="header-info">
+            <div class="lang">
+              <a href="#"><i class="bi bi-translate"></i></a>
+            </div>
+            <div class="login">
+              <a href="#"><i class="bi bi-person-circle"></i></a>
+            </div>
+            <div class="cart">
+              <a href="#"><i class="bi bi-cart3"></i></a>
+            </div>
+          </div>
+                </div>
+            </div>
+        </nav>

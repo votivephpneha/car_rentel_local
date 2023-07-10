@@ -162,7 +162,9 @@
    <script src="{{ asset('resources/js/forms.js') }}"></script>
 
    <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
-
+   <script type="text/javascript">
+     new DataTable('#example');
+   </script>
 
    @yield('current_page_js')
 

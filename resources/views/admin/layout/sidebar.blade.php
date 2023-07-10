@@ -53,7 +53,22 @@
               </p>
             </a>
           </li>
-
+          <li class="nav-item">
+            <a href="{{ url('/admin/booking_management') }}" class="nav-link">
+              <i class="nav-icon fas fa-tasks"></i>
+              <p>
+                Booking Management
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url('/admin/booking_management') }}" class="nav-link">
+              <i class="nav-icon fas fa-tasks"></i>
+              <p>
+                Car Management
+              </p>
+            </a>
+          </li>
           <li class="nav-item">
             <a href="{{ url('/admin/home_management') }}" class="nav-link">
               <i class="nav-icon fas fa-tasks"></i>

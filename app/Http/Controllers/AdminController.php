@@ -189,7 +189,7 @@ class AdminController extends Controller
         $subtitle = $request->subtitle;
         $content = $request->content;
 
-        $slug = $request->pagetitle;//$this->attributes['slug'] = str_slug($subtitle);
+        $slug = str_replace(" ","-",$pagetitle);//$this->attributes['slug'] = str_slug($subtitle);
 
         $type = 'cms';
 
@@ -241,7 +241,7 @@ class AdminController extends Controller
         $pagetitle = $request->pagetitle;
         $subtitle = $request->subtitle;
         $content = $request->content;
-        $slug = $request->pagetitle;//$this->attributes['slug'] = str_slug($subtitle);
+        $slug = str_replace('?','',strtolower(str_replace(" ","-",$pagetitle)));//$this->attributes['slug'] = str_slug($subtitle);
         $page_id = $request->input('user_id');
         $type = 'cms';
 
@@ -983,7 +983,84 @@ class AdminController extends Controller
 
     }
 
-    /* End help notification */
+    public function addCategories() 
+    {
+        return view("admin/categories/add_categories");
+    }
 
+    public function postCategory(Request $request) 
+    {
+        $categories = $request->categories;
+        
+        if($request->hasFile("image")){
+            $category_image = $request->file('image');
+            $cat_image = $file->getClientOriginalName();
+            $destinationPath = base_path() .'/public/uploads/category';
+            $file_name = time() . "." . $image->extension();;
+            $file->move($destinationPath,$file_name);
+        }
+    }
+
+    public function web_menus() 
+    {
+        return view("admin/web_menus");
+    }
+
+    public function add_menus(Request $request){
+        $menus = $request->menus;
+    }
+
+    public function booking_management(){
+        $data['booking_details'] = DB::table('booking_management')->get();
+        //print_r($data['booking_details']);
+        return view("admin/booking/booking")->with($data);
+    }
+
+    public function view_booking(Request $request){
+        $booking_id = $request->id; 
+        $data['booking_details'] = DB::table('booking_management')->where("id",$booking_id)->get()->first();
+        //print_r($data['booking_details']);die;
+        return view("admin/booking/view_booking")->with($data);
+    }
+
+    public function change_booking_status(Request $request){
+        $update_booking_status = DB::table('booking_management')->where("id",$request->booking_id)->update(['booking_status'=>$request->booking_status]);
+        
+        session::flash('success', 'Booking status updated successfully');
+        return redirect('admin/view_booking/'.$request->booking_id);
+        
+        
+        
+    }
+
+    public function car_management(){
+        return view("admin/car/carmgmt");
+    }
+
+    public function add_cars(){
+        return view("admin/car/add_cars");
+    }
+
+    public function submit_cars(Request $request){
+        $title = $request->title;
+        $sub_title = $request->sub_title;
+       
+        $no_of_day = $request->no_of_day;
+        $no_of_seats = $request->no_of_seats;
+        $no_of_km = $request->no_of_km;
+        $price = $request->price;
+
+        $image = $request->file('image');
+
+        if($image){
+            $destinationPath = base_path() .'/public/uploads/cars';
+            $file_name = time().".".$image->extension();
+            $file->move($destinationPath,$file_name);
+        }
+
+        $insert_cars = DB::table('car_management')->insert(['title'=>$title,'sub_title'=>$sub_title,'no_of_day'=>$no_of_day,'no_of_seats'=>$no_of_seats,'no_of_day'=>$no_of_km,'price'=>$price,'created_at'=>date('Y-m-d H:i:s')]);
+
+        
+    }
 
 }
