@@ -288,8 +288,9 @@
 
                                             <th>SNo.</th>
 
-                                            <th>Customer Name</th>
+                                            <th>Name</th>
                                             <th>Email</th>
+                                            <th>Business</th>
                                             <th>Total Price</th>
                                             
                                             <th>Action</th>
@@ -305,15 +306,23 @@
                                             <?php $i = 1; ?>
 
                                             @foreach ($booking_details as $arr)
-
+                                                
                                                 <tr id="row{{ $arr->id }}">
 
                                                     <td>{{ $i }}</td>
 
-                                                    <td>{{ $arr->customer_first_name }} {{ $arr->customer_last_name }}</td>
+                                                    <td>{{ $arr->driver_first_name }} {{ $arr->driver_last_name }}</td>
 
-                                                    <td>{{ $arr->customer_email }}</td>
-
+                                                    <td>{{ $arr->driver_email_address }}</td>
+                                                    <td>
+                                                      @if(!empty($arr->customer_id))
+                                                      <?php
+                                                        $business_user = DB::table('users')->where("id",$arr->customer_id)->get()->first();
+                                                        
+                                                      ?>
+                                                      {{ $business_user->first_name }}
+                                                      @endif
+                                                      </td>
                                                     <td>
                                                       <?php
                                                         $price = $arr->total;

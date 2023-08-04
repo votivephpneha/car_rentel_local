@@ -168,6 +168,30 @@ $("#customerAdmin_form").validate({
       required: true,
     },
   },
+  // Specify validation error messages
+  messages: {
+    fname: "Please enter the Name",
+    email: {
+      required:"Please enter the email",
+      email:"Please enter the valid email address",
+    },
+    password: "Please enter the password",
+    confirm_password:{
+      required:"Please enter the confirm password",
+      equalTo:"Please enter the same password again"
+    },
+    address: {
+      required: "Please enter the Address",
+    },
+    city: {
+      required: "Please enter the City",
+    },
+    user_country: {
+      required: "Please enter the User Country",
+    },
+    
+    
+  },
   submitHandler: function (form) {
     var site_url = $("#baseUrl").val();
     // alert(site_url);
@@ -183,6 +207,67 @@ $("#customerAdmin_form").validate({
           // success_noti(response.msg);
           // setTimeout(function(){window.location.reload()},1000);
           setTimeout(function(){window.location.href=site_url+"/admin/customer_management"},1000);
+        } else {
+          error_noti(response.msg);
+        }
+
+      }
+    });
+    // event.preventDefault();
+  }
+});
+
+$("#businessAdmin_form").validate({
+  debug: false,
+  rules: {
+    fname: {
+        required: true,
+    },
+    // lname: {
+    //   required: true,
+    // },
+    email: {
+      required: true,
+      email:true,
+    },
+    contact_number: {
+      required: true,
+      number:true,
+      // minlength: 10,
+      // maxlength: 10,
+    },
+    password: {
+        required: true
+    },
+    confirm_password:{
+      required: true,
+      equalTo : "#password"
+    },
+    address: {
+      required: true,
+    },
+    city: {
+      required: true,
+    },
+    user_country: {
+      required: true,
+    },
+  },
+  submitHandler: function (form) {
+    var site_url = $("#baseUrl").val();
+    // alert(site_url);
+    var formData = $(form).serialize();
+    $(form).ajaxSubmit({
+      type: 'POST',
+      url: site_url + '/admin/add_business_action',
+      data: formData,
+      success: function (response) {
+        console.log(response);
+        if (response.status == 'success') {
+          // $("#register_form")[0].reset();
+          // success_noti(response.msg);
+          // setTimeout(function(){window.location.reload()},1000);
+          setTimeout(function(){window.location.href=site_url+"/admin/business_management"},1000);
         } else {
           error_noti(response.msg);
         }
@@ -244,6 +329,67 @@ $("#customerUpdateAdmin_form").validate({
           success_noti(response.msg);
           // setTimeout(function(){window.location.reload()},1000);
           setTimeout(function(){window.location.href=site_url+"/admin/customer_management"},1000);
+        } else {
+          error_noti(response.msg);
+        }
+
+      }
+    });
+    // event.preventDefault();
+  }
+});
+
+$("#businessUpdateAdmin_form").validate({
+  debug: false,
+  rules: {
+    fname: {
+        required: true,
+    },
+    // lname: {
+    //   required: true,
+    // },
+    email: {
+      required: true,
+      email:true,
+    },
+    contact_number: {
+      required: true,
+      number:true,
+      // minlength: 10,
+      // maxlength: 10,
+    },
+    // password: {
+    //     required: true
+    // },
+    // confirm_password:{
+    //   required: true,
+    //   equalTo : "#password"
+    // },
+    address: {
+      required: true,
+    },
+    city: {
+      required: true,
+    },
+    user_country: {
+      required: true,
+    },
+  },
+  submitHandler: function (form) {
+    var site_url = $("#baseUrl").val();
+    // alert(site_url);
+    var formData = $(form).serialize();
+    $(form).ajaxSubmit({
+      type: 'POST',
+      url: site_url + '/admin/business_update',
+      data: formData,
+      success: function (response) {
+        // console.log(response);
+        if (response.status == 'success') {
+          // $("#register_form")[0].reset();
+          success_noti(response.msg);
+          // setTimeout(function(){window.location.reload()},1000);
+          setTimeout(function(){window.location.href=site_url+"/admin/business_management"},1000);
         } else {
           error_noti(response.msg);
         }

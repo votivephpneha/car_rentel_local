@@ -54,6 +54,14 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="{{ url('/admin/business_management') }}" class="nav-link">
+              <i class="nav-icon fas fa-tasks"></i>
+              <p>
+                Business List
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="{{ url('/admin/booking_management') }}" class="nav-link">
               <i class="nav-icon fas fa-tasks"></i>
               <p>
@@ -62,7 +70,31 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ url('/admin/booking_management') }}" class="nav-link">
+            <a href="{{ url('/admin/payment_list') }}" class="nav-link">
+              <i class="nav-icon fas fa-tasks"></i>
+              <p>
+                Payment Transaction
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url('/admin/translation_management') }}" class="nav-link">
+              <i class="nav-icon fas fa-tasks"></i>
+              <p>
+                Translation Management
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url('/admin/show_category') }}" class="nav-link">
+              <i class="nav-icon fas fa-tasks"></i>
+              <p>
+                Category
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ url('/admin/car_management') }}" class="nav-link">
               <i class="nav-icon fas fa-tasks"></i>
               <p>
                 Car Management
@@ -70,21 +102,30 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="{{ url('/admin/language_management') }}" class="nav-link">
+              <i class="nav-icon fas fa-tasks"></i>
+              <p>
+                Language Mangement
+              </p>
+            </a>
+          </li>
+          <!-- <li class="nav-item">
             <a href="{{ url('/admin/home_management') }}" class="nav-link">
               <i class="nav-icon fas fa-tasks"></i>
               <p>
                 Home
               </p>
             </a>
-          </li>
+          </li> -->
 
-<li class="nav-header">Home Landing</li>
+          <li class="nav-header">Home Landing</li>
           <li class="nav-item">
-             <a href="{{ url('/admin/landing_management') }}" class="nav-link">
+            <a href="{{ url('/admin/landing_management') }}" class="nav-link">
               <i class="nav-icon fas fa-tasks"></i>
               <p>Landing</p>
             </a>
           </li>
+          
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-circle"></i>
@@ -93,7 +134,14 @@
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
+            
             <ul class="nav nav-treeview">
+              <li class="nav-item">
+             <a href="{{ url('/admin/show_logos') }}" class="nav-link">
+              <i class="far fa-circle nav-icon"></i>
+              <p>Brand Section</p>
+            </a>
+          </li>
               <li class="nav-item">
                 <a href="{{ url('/admin/our_mission') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>

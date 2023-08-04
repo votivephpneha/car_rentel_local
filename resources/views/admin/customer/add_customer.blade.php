@@ -72,29 +72,6 @@
 
         <div class="card card-default">
 
-          <div class="card-header">
-
-            <h3 class="card-title">Customer Form</h3>
-
-
-
-            <!-- <div class="card-tools">
-
-              <button type="button" class="btn btn-tool" data-card-widget="collapse">
-
-                <i class="fas fa-minus"></i>
-
-              </button>
-
-              <button type="button" class="btn btn-tool" data-card-widget="remove">
-
-                <i class="fas fa-times"></i>
-
-              </button>
-
-            </div> -->
-
-          </div>
 
 
 
@@ -152,9 +129,9 @@
 
                     <div class="form-group">
 
-                      <label>Customer Number</label>
+                      <label>Contact Number</label>
 
-                      <input type="number" class="form-control" name="contact_number" id="contact_number" placeholder="Enter Customer Number">
+                      <input type="text" class="form-control" name="contact_number" id="contact_number" maxlength="10" placeholder="Enter Customer Number">
 
                     </div>
 

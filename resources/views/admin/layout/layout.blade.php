@@ -49,6 +49,7 @@
    <link href="{{ asset('resources/js/raone/jquery-ui.min.js') }}" rel="stylesheet" />
    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> --> 
+   <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
    @yield('current_page_css')
 
@@ -162,12 +163,53 @@
    <script src="{{ asset('resources/js/forms.js') }}"></script>
 
    <script src="//cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
-   <script type="text/javascript">
-     new DataTable('#example');
-   </script>
+   <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
 
    @yield('current_page_js')
+   <script type="text/javascript">
+     function changePrice(days){
+      
+      var days1 = days.replace(" Day","").replace("+","");
+      //alert(days1);
+      $("#days-"+days1).val(days1+"+ Day");
+      $(".price_div").hide();
+      $("#price_"+days1).show();
 
+     }
+    
+   $( function() {
+    $( "#from_date" ).datepicker({
+        dateFormat: "dd-M-yy",
+        
+        onSelect: function (date) {
+            var min_date = new Date(date);
+            min_date.setDate(min_date.getDate() + 1);
+           
+            var dt2 = $('#to_date');
+            dt2.datepicker('setDate', min_date);
+            dt2.datepicker('option', 'minDate', min_date);
+        }
+    });
+    $( "#to_date" ).datepicker({
+        dateFormat: "dd-M-yy",
+        
+    });
+  } );
+   function searchFilter(){
+     var from_date = $("#from_date").val();
+     var to_date = $("#to_date").val();
+     $.ajax({
+      type: "GET",
+      url: "{{ url('admin/search_date_filter') }}",
+      data: {from_date:from_date,to_date:to_date},
+      cache: false,
+      success: function(data){
+        console.log("data",data);
+         $(".date_search_data").html(data);
+      }
+     });
+   }
+   </script>
    </body>
 
 </html>

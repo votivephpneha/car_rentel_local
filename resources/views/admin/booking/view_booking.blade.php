@@ -13,7 +13,39 @@
 
 
 @section('current_page_js')
+<script type="text/javascript">
+  var sum = 0;
+  $(".car_price").each(function(i,val){
+    
+    var price = $(this).text();
+    var new_price = $.trim(price.replace("$",""));
+    sum = sum + parseInt(new_price);
+    
+  });
+  console.log("car_price",sum.toFixed(2));
+  $(".total_price").html("$"+sum.toFixed(2));
 
+  $(".assign_ride_btn").click(function(){
+    $(".assign_ride_dropdown").show();
+    $(this).hide();
+  });
+  $(".business_dropdown").change(function(){
+    var site_url = $("#baseUrl").val();
+    var ride_val = $(".business_dropdown").val();
+    var booking_id = "{{ $booking_details->id }}";
+    //alert(ride_val);
+    $.ajax({
+      type: 'POST',
+      url: site_url + '/admin/assign_ride',
+      data: {ride_val:ride_val,booking_id:booking_id,"_token":"{{ csrf_token() }}"},
+      success: function (response) {
+        console.log(response);
+        window.location.href=site_url+"/admin/view_booking/"+booking_id;
+
+      }
+    });
+  });
+</script>
 @endsection
 
 
@@ -92,12 +124,13 @@
                   <div class="row">
                     <div class="col-md-10">
                       <div class="form-group">
+                        
                         <input type="hidden" name="booking_id" value="{{ $booking_details->id }}">
                         <select name="booking_status" class="form-control">
                           <option>Change Status</option>
-                          <option value="1">Pending</option>
-                          <option value="2">Approved</option>
-                          <option value="3">Completed</option>
+                          <option value="1" @if($booking_details->booking_status == '1') Selected @endif>Pending</option>
+                          <option value="2" @if($booking_details->booking_status == '2') Selected @endif>Accepted</option>
+                          <option value="3" @if($booking_details->booking_status == '3') Selected @endif>Rejected</option>
                         </select>
                       </div>
                     </div>
@@ -136,10 +169,10 @@
                           Pending
                           @endif
                           @if($booking_details->booking_status == "2")
-                          Approved
+                          Assigned
                           @endif
                           @if($booking_details->booking_status == "3")
-                          Completed
+                          Accepted
                           @endif
                         </td>
                       </tr>
@@ -165,16 +198,32 @@
                     <thead>
                       <tr>
                         <th>Payment Methods</th>
-                        <td>Visa</td>
+                        <td>{{ $booking_details->payment_method }}</td>
                       </tr>
                       <tr>
                         <th>Payment Status</th>
                        
-                        <td>Pending</td>
+                        <td>
+                          
+                          Pending
+                          
+                        </td>
                       </tr>
                      
                     </thead>
                   </table>
+                </div>
+                <div class="assign_ride">
+                  <button class="btn btn-primary assign_ride_btn">Assign Ride</button>
+                  <div class="assign_ride_dropdown" style="display: none;">
+                    <label for="business_list">Business List</label>
+                    <select class="form-control business_dropdown">
+                      <option>Select Business</option>
+                      @foreach($business_list as $business)
+                      <option value="{{ $business->id  }}"  @if($business->id == $booking_details->customer_id) Selected @endif>{{ $business->first_name }} {{ $business->last_name }}</option>
+                      @endforeach
+                    </select>
+                  </div>
                 </div>
               </div>
               <div class="col-md-6">
@@ -185,23 +234,23 @@
                     <thead>
                       <tr>
                         <th>First Name</th>
-                        <td>{{ $booking_details->customer_first_name }}</td>
+                        <td>{{ $booking_details->driver_first_name }}</td>
                       </tr>
                       <tr>
                         <th>Last Name</th>
-                        <td>{{ $booking_details->customer_last_name }}</td>
+                        <td>{{ $booking_details->driver_last_name }}</td>
                       </tr>
                       <tr>
                         <th>Email</th>
-                        <td>{{ $booking_details->customer_email }}</td>
+                        <td>{{ $booking_details->driver_email_address }}</td>
                       </tr>
                       <tr>
                         <th>Phone No</th>
-                        <td>{{ $booking_details->customer_phone_no }}</td>
+                        <td>{{ $booking_details->driver_contact_no }}</td>
                       </tr>
                       <tr>
                         <th>Country</th>
-                        <td>{{ $booking_details->customer_country }}</td>
+                        <td>{{ $booking_details->driver_country }}</td>
                       </tr>
                     </thead>
                   </table>
@@ -245,15 +294,45 @@
                     <tr>
                       <th>Sno</th>
                       <th>Image</th>
-                      <th>Category</th>
+                      <th>Title</th>
+                      <th>Vehicle Type</th>
                       <th>From Date</th>
                       <th>To Date</th>
+                      <th>Price</th>
                     </tr>
                   </thead>
                   <tbody>
-
-                    <tr>
+                    <?php $i = 1; ?>
+                    @foreach($booking_data as $b_data)
+                    <?php
+                      //print_r($b_data);
                       
+                      $car_details = DB::table('car_management')->where("id",$b_data->vehicle_id)->get()->first();
+                    ?>
+                    <tr>
+                      <td>{{ $i }}</td>
+                      <td><img src="{{ url('public/uploads/cars') }}/{{ $car_details->image }}" style="width:100px"></td>
+                      <td>{{ $car_details->title }}</td>
+                      <td>{{ $car_details->vehicle_type }}</td>
+                      <td>{{ $b_data->from_date }}</td>
+                      <td>{{ $b_data->to_date }}</td>
+                      <td class="car_price">
+                        
+                        <?php
+                              $price_data = DB::table('car_price_days')->where('no_of_day','1 Day')->where('car_id',$b_data->vehicle_id)->first();
+                              $price = $price_data->price;
+                              echo "$".number_format((float)$price, 2, '.', '');
+                            ?>
+                      </td>
+                    </tr>
+                    <?php
+                      $i++;
+                    ?>
+                    @endforeach
+                    <tr>
+                      <td colspan="5"></td>
+                      <td><b>Total Price</b></td>
+                      <td class="total_price"></td>
                     </tr>
                   </tbody>
                 </table>

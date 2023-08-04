@@ -38,7 +38,7 @@
 
   
 
-    <div class="flex-container" style="padding-top: 150px;height:auto;">
+    <div class="container" style="padding-top: 150px;height:auto;">
 <div class="logo-center" style="padding-left:22px;padding-right:22px;text-align: justify;">
   <h2 class="text-center">{{ $page_content->page_title }}</h2>
 {!! $page_content->page_content !!}

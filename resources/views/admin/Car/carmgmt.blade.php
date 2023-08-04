@@ -14,6 +14,10 @@
 
   .slow .toggle-group { transition: left 0.7s; -webkit-transition: left 0.7s; }
 
+  .table-bordered td, .table-bordered th {
+    border: 1px solid #dee2e6;
+    vertical-align: middle;
+  }
 </style>
 
 @endsection
@@ -26,7 +30,7 @@
 
 <script type="text/javascript">
 
- function delete_user(user_id){
+ function delete_car(car_id){
 
     $.ajaxSetup({
 
@@ -42,15 +46,15 @@
 
      type: 'POST',
 
-     url: "<?php echo url('/admin/deletepage'); ?>",
+     url: "<?php echo url('/admin/delete_car'); ?>",
 
      enctype: 'multipart/form-data',
 
-     data:{user_id:user_id,'_token':'<?php echo csrf_token(); ?>'},
+     data:{car_id:car_id,'_token':'<?php echo csrf_token(); ?>'},
 
      beforeSend:function(){
 
-       return confirm("Are you sure you want to delete this page?");
+       return confirm("Are you sure you want to delete this car?");
 
      },
 
@@ -64,15 +68,15 @@
 
        if (obj.status == 'success') {
 
-        //  setTimeout(function() {
+         setTimeout(function() {
 
-        //   $('#success_message').fadeOut("slow");
+          $('#success_message').fadeOut("slow");
 
-        // }, 2000 );
+        }, 2000 );
 
-        // $("#row" + user_id).remove();
+        $("#row" + car_id).remove();
 
-        // success_noti(results.success);
+        success_noti(results.success);
 
        } 
 
@@ -96,7 +100,7 @@
 
 <script type="text/javascript">
 
-  function deleteConfirmation(id) {
+  function deleteConfirmation(car_id) {
 
     toastDelete.fire({
 
@@ -112,11 +116,11 @@
 
           type: 'POST',
 
-          url: "{{url('/admin/deletefaq')}}",
+          url: "{{url('/admin/delete_car')}}",
 
           data: {
 
-            user_id: id,
+            car_id: car_id,
 
             _token: CSRF_TOKEN
 
@@ -126,7 +130,7 @@
 
           success: function(results) {
 
-            $("#row" + id).remove();
+            $("#row" + car_id).remove();
 
             // console.log(results);
 
@@ -158,7 +162,7 @@
 
     var status = $(this).prop('checked') == true ? 1 : 0; 
 
-    var user_id = $(this).data('id');
+    var car_id = $(this).data('id');
 
     // alert(status);
 
@@ -170,9 +174,9 @@
 
       dataType: "json",
 
-      url: "<?php echo url('/admin/change_booking_status'); ?>",
+      url: "<?php echo url('/admin/change_car_status'); ?>",
 
-      data: {'status': status, 'user_id': user_id},
+      data: {'status': status, 'car_id': car_id},
 
       success: function(data){
 
@@ -228,7 +232,7 @@
 
                     <div class="col-sm-6">
 
-                        <h1>Booking List</h1>
+                        <h1>Car Management</h1>
 
                     </div>
 
@@ -238,7 +242,7 @@
 
                             <li class="breadcrumb-item"><a href="{{ url('/dashboard') }}">Home</a></li>
 
-                            <li class="breadcrumb-item active">Booking List</li>
+                            <li class="breadcrumb-item active">Car Management</li>
 
                         </ol>
 
@@ -266,13 +270,13 @@
 
                     <div class="col-12">
 
-                        <!-- <div class="row">
+                        <div class="row">
 
                         <div class="col-md-11"></div>
 
-                        <div class="col-md-1" style="margin-bottom: 5px;"><a href="{{ url('/admin/add_faq') }}" class="btn btn-block btn-dark">Add</a></div>
+                        <div class="col-md-1" style="margin-bottom: 5px;"><a href="{{ url('/admin/add_cars') }}" class="btn btn-block btn-dark">Add</a></div>
 
-                        </div> -->
+                        </div>
 
 
                         <div class="card">
@@ -288,10 +292,11 @@
 
                                             <th>SNo.</th>
 
-                                            <th>Customer Name</th>
-                                            <th>Email</th>
-                                            <th>Total Price</th>
+                                            <th>Image</th>
+                                            <th>Title</th>
+                                            <th>Vehicle Type</th>
                                             
+                                            <th>Status</th>
                                             <th>Action</th>
 
                                         </tr>
@@ -300,27 +305,25 @@
 
                                     <tbody>
 
-                                        @if (!$booking_details->isEmpty())
+                                        @if (!$car_list->isEmpty())
 
                                             <?php $i = 1; ?>
 
-                                            @foreach ($booking_details as $arr)
+                                            @foreach ($car_list as $arr)
 
                                                 <tr id="row{{ $arr->id }}">
 
                                                     <td>{{ $i }}</td>
+                                                    <td><img src="{{ url('public/uploads/cars') }}/{{ $arr->image }}" style="width:100px"></td>
+                                                    <td>{{ $arr->title }}</td>
 
-                                                    <td>{{ $arr->customer_first_name }} {{ $arr->customer_last_name }}</td>
+                                                    <td>{{ $arr->vehicle_type }}</td>
 
-                                                    <td>{{ $arr->customer_email }}</td>
+                                                    <td class="project-state">
 
-                                                    <td>
-                                                      <?php
-                                                        $price = $arr->total;
-                                                        echo "$".number_format((float)$price, 2, '.', '');
-                                                      ?>
-                                                      </td>
+                                                        <input  type="checkbox" class="toggle-class" data-id="{{$arr->id}}" data-toggle="toggle" data-style="slow" data-onstyle="success" data-size="small" data-on="Active" data-off="InActive" {{ $arr->status ? 'checked' : '' }}>
 
+                                                    </td>
 
                                                     <td class="text-center py-0 align-middle">
 
@@ -328,7 +331,9 @@
 
                                                           
 
-                                                            <a href="{{url('/admin/view_booking')}}/{{$arr->id}}" class="btn btn-info" style="margin-right: 3px;"><i class="fa fa-eye"></i></a>
+                                                            <a href="{{url('/admin/edit_cars')}}/{{$arr->id}}" class="btn btn-info" style="margin-right: 3px;"><i class="fas fa-pencil-alt"></i></a>
+
+                                                            <a href="javascript:void(0)" onclick="deleteConfirmation('<?php echo $arr->id; ?>');" class="btn btn-danger" style="margin-right: 3px;"><i class="fas fa-trash"  alt="user" title="car"></i></a>
 
                                                             
 

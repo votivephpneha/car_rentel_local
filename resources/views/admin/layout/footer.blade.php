@@ -2,7 +2,7 @@
 
   <footer class="main-footer">
 
-    <strong>Copyright &copy; 2021-2022 <a href="http://www.votivetech.com/">snowglobecities.io</a>.</strong>
+    <strong>© 2023 <a href="#">Royal Car Rental</a>.</strong>
 
     All rights reserved.
 

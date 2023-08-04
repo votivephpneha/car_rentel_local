@@ -439,7 +439,100 @@ $("#landingUpdateAdmin_form").validate({
                     </div>
 
                   </div>                  
-
+                  <div class="card-header" style="width: 100%; margin-bottom: 20px;"><h3 class="card-title">Brand Section Content</h3></div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Image One</label>
+                      <input type="hidden" name="image_one_old" value="{{(!empty($page_info->image_one) ? $page_info->image_one : '')}}">
+                      <input type="file" class="form-control" name="image_one" id="image_one" accept="image/*">
+                    </div>
+                  </div> 
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Image Two</label>
+                      <input type="hidden" name="image_two_old" value="{{(!empty($page_info->image_two) ? $page_info->image_two : '')}}">
+                      <input type="file" class="form-control" name="image_two" id="image_two" accept="image/*">
+                    </div>
+                  </div> 
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Image Three</label>
+                      <input type="hidden" name="image_three_old" value="{{(!empty($page_info->image_three) ? $page_info->image_three : '')}}">
+                      <input type="file" class="form-control" name="image_three" id="image_three" accept="image/*">
+                    </div>
+                  </div> 
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Heading One(English)</label>
+                      <input type="text" class="form-control" name="heading_one" id="heading_one" accept="image/*" value="{{(!empty($page_info->heading_one) ? $page_info->heading_one : '')}}">
+                    </div>
+                  </div> 
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Heading Two(English)</label>
+                      <input type="text" class="form-control" name="heading_two" id="heading_two" accept="image/*" value="{{(!empty($page_info->heading_one) ? $page_info->heading_two : '')}}">
+                    </div>
+                  </div> 
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Heading Three(English)</label>
+                      <input type="text" class="form-control" name="heading_three" id="heading_three" accept="image/*" value="{{(!empty($page_info->heading_two) ? $page_info->heading_two : '')}}">
+                    </div>
+                  </div> 
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Content One(English)</label>
+                      <input type="text" class="form-control" name="content_one" id="content_one" accept="image/*" value="{{(!empty($page_info->content_one) ? $page_info->content_one : '')}}">
+                    </div>
+                  </div> 
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Content Two(English)</label>
+                      <input type="text" class="form-control" name="content_two" id="content_two" accept="image/*" value="{{(!empty($page_info->content_two) ? $page_info->content_two : '')}}">
+                    </div>
+                  </div> 
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Content Three(English)</label>
+                      <input type="text" class="form-control" name="content_three" id="content_three" accept="image/*" value="{{(!empty($page_info->content_three) ? $page_info->content_three : '')}}">
+                    </div>
+                  </div> 
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Heading One(Italian)</label>
+                      <input type="text" class="form-control" name="heading_one_it" id="heading_one_it" accept="image/*" value="{{(!empty($page_info->heading_one_it) ? $page_info->heading_one_it : '')}}">
+                    </div>
+                  </div> 
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Heading Two(Italian)</label>
+                      <input type="text" class="form-control" name="heading_two_it" id="heading_two_it" accept="image/*" value="{{(!empty($page_info->heading_two_it) ? $page_info->heading_two_it : '')}}">
+                    </div>
+                  </div> 
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Heading Three(Italian)</label>
+                      <input type="text" class="form-control" name="heading_three_it" id="heading_three_it" accept="image/*" value="{{(!empty($page_info->heading_three_it) ? $page_info->heading_three_it : '')}}">
+                    </div>
+                  </div> 
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Content One(Italian)</label>
+                      <input type="text" class="form-control" name="content_one_it" id="content_one_it" accept="image/*" value="{{(!empty($page_info->content_one_it) ? $page_info->content_one_it : '')}}">
+                    </div>
+                  </div> 
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Content Two(Italian)</label>
+                      <input type="text" class="form-control" name="content_two_it" id="content_two_it" accept="image/*" value="{{(!empty($page_info->content_two_it) ? $page_info->content_two_it : '')}}">
+                    </div>
+                  </div> 
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label>Content Three(Italian)</label>
+                      <input type="text" class="form-control" name="content_three_it" id="content_three_it" accept="image/*" value="{{(!empty($page_info->content_three_it) ? $page_info->content_three_it : '')}}">
+                    </div>
+                  </div> 
 
                   <div class="col-12">
 

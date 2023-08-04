@@ -70,7 +70,7 @@
 
   <div class="login-logo">
 
-    <a href="{{url('/')}}">Snow Globe Cities Admin</a>
+    <a href="{{url('/')}}">Royal Car Rentel Admin</a>
 
   </div>
 

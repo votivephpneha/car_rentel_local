@@ -66,7 +66,8 @@ class AdminController extends Controller
     public function dashboard()
     {
 
-        $totaluser = DB::table('users')->get();
+        $totaluser = DB::table('users')->where("user_type","normal_user")->orWhere("user_type","business_user")->get();
+
 
         $data['total_user'] = count($totaluser);
 
@@ -189,7 +190,7 @@ class AdminController extends Controller
         $subtitle = $request->subtitle;
         $content = $request->content;
 
-        $slug = str_replace(" ","-",$pagetitle);//$this->attributes['slug'] = str_slug($subtitle);
+        $slug = str_replace('?','',strtolower(str_replace(" ","-",$pagetitle)));//$this->attributes['slug'] = str_slug($subtitle);
 
         $type = 'cms';
 
@@ -378,6 +379,22 @@ class AdminController extends Controller
         $news_title1 = $request->news_title1;
         $news_title2 = $request->news_title2;
 
+        $heading_one = $request->heading_one;
+        $heading_two = $request->heading_two;
+        $heading_three = $request->heading_three;
+
+        $content_one = $request->content_one;
+        $content_two = $request->content_two;
+        $content_three = $request->content_three;
+
+        $heading_one_it = $request->heading_one_it;
+        $heading_two_it = $request->heading_two_it;
+        $heading_three_it = $request->heading_three_it;
+
+        $content_one_it = $request->content_one_it;
+        $content_two_it = $request->content_two_it;
+        $content_three_it = $request->content_three_it;
+
         $request->hasFile("home_logo") ? $request->file("home_logo")->move("public/uploads/landing/", $home_logo = time().strtolower(trim($request->file('home_logo')->getClientOriginalName()))) : '';
 
         if(empty($home_logo)){ $home_logo = $request->logo_img_old; }
@@ -407,6 +424,16 @@ class AdminController extends Controller
                 $ingos_logo6 = '';
         $request->hasFile("ingos_logo6") ? $request->file("ingos_logo6")->move("public/uploads/landing/", $ingos_logo6 = time().strtolower(trim($request->file('ingos_logo6')->getClientOriginalName()))) : '';
         if(empty($ingos_logo6)){ $ingos_logo6 = $request->ingos_logo6_old; }
+
+        $request->hasFile("image_one") ? $request->file("image_one")->move("public/uploads/landing/", $image_one = time().strtolower(trim($request->file('image_one')->getClientOriginalName()))) : '';
+        if(empty($image_one)){ $image_one = $request->image_one_old; }
+
+
+        $request->hasFile("image_two") ? $request->file("image_two")->move("public/uploads/landing/", $image_two = time().strtolower(trim($request->file('image_two')->getClientOriginalName()))) : '';
+        if(empty($image_two)){ $image_two = $request->image_two_old; }
+
+        $request->hasFile("image_three") ? $request->file("image_three")->move("public/uploads/landing/", $image_three = time().strtolower(trim($request->file('image_three')->getClientOriginalName()))) : '';
+        if(empty($image_three)){ $image_three = $request->image_three_old; }
 
       /******/  
 
@@ -440,6 +467,26 @@ class AdminController extends Controller
         $homeData->ingos_logo4 = $ingos_logo4;
         $homeData->ingos_logo5 = $ingos_logo5;
         $homeData->ingos_logo6 = $ingos_logo6;
+
+        $homeData->image_one = $image_one;
+        $homeData->image_two = $image_two;
+        $homeData->image_three = $image_three;
+
+        $homeData->heading_one = $heading_one;
+        $homeData->heading_two = $heading_two;
+        $homeData->heading_three = $heading_three;
+
+        $homeData->content_one = $content_one;
+        $homeData->content_two = $content_two;
+        $homeData->content_three = $content_three;
+
+        $homeData->heading_one_it = $heading_one_it;
+        $homeData->heading_two_it = $heading_two_it;
+        $homeData->heading_three_it = $heading_three_it;
+
+        $homeData->content_one_it = $content_one_it;
+        $homeData->content_two_it = $content_two_it;
+        $homeData->content_three_it = $content_three_it;
 
         $homeData->updated_at = date('Y-m-d H:i:s');
         $res = $homeData->save();
@@ -983,35 +1030,21 @@ class AdminController extends Controller
 
     }
 
-    public function addCategories() 
-    {
-        return view("admin/categories/add_categories");
-    }
-
-    public function postCategory(Request $request) 
-    {
-        $categories = $request->categories;
-        
-        if($request->hasFile("image")){
-            $category_image = $request->file('image');
-            $cat_image = $file->getClientOriginalName();
-            $destinationPath = base_path() .'/public/uploads/category';
-            $file_name = time() . "." . $image->extension();;
-            $file->move($destinationPath,$file_name);
+    /* End help notification */
+    public function booking_management(Request $request){
+        $from_date = Session::get("from_date");
+        $to_date = Session::get("to_date");
+        if($request->status == 'Active'){
+            $data['booking_details'] = DB::table('booking_management')->where('status','1')->orderBy('created_at', 'DESC')->get();
+        }else{
+            if($request->status == 'Inactive'){
+                $data['booking_details'] = DB::table('booking_management')->where('status','0')->orderBy('created_at', 'DESC')->get();
+            }else{
+                $data['booking_details'] = DB::table('booking_management')->orderBy('created_at', 'DESC')->get();
+            }
         }
-    }
-
-    public function web_menus() 
-    {
-        return view("admin/web_menus");
-    }
-
-    public function add_menus(Request $request){
-        $menus = $request->menus;
-    }
-
-    public function booking_management(){
-        $data['booking_details'] = DB::table('booking_management')->get();
+        
+        
         //print_r($data['booking_details']);
         return view("admin/booking/booking")->with($data);
     }
@@ -1019,8 +1052,17 @@ class AdminController extends Controller
     public function view_booking(Request $request){
         $booking_id = $request->id; 
         $data['booking_details'] = DB::table('booking_management')->where("id",$booking_id)->get()->first();
+        $data['booking_data'] = DB::table('booking_details')->where("booking_id",$data['booking_details']->booking_id)->get();
+        $data['business_list'] = DB::table('users')->where("user_type","business_user")->get();
         //print_r($data['booking_details']);die;
         return view("admin/booking/view_booking")->with($data);
+    }
+
+    public function assign_ride(Request $request){
+        //echo $request->ride_val;die;
+        $update_booking_status = DB::table('booking_management')->where("id",$request->booking_id)->update(['customer_id'=>$request->ride_val]);
+        session::flash('success', 'Ride assign successfully');
+        //return redirect('admin/view_booking/'.$request->booking_id);
     }
 
     public function change_booking_status(Request $request){
@@ -1034,33 +1076,459 @@ class AdminController extends Controller
     }
 
     public function car_management(){
-        return view("admin/car/carmgmt");
+        $data['car_list'] = DB::table('car_management')->get();
+        
+        return view("admin/car/carmgmt")->with($data);
     }
 
     public function add_cars(){
-        return view("admin/car/add_cars");
+        $data['category_list'] = DB::table('categories')->get();
+        return view("admin/car/add_cars")->with($data);
     }
 
     public function submit_cars(Request $request){
         $title = $request->title;
-        $sub_title = $request->sub_title;
+        $vehicle_type = $request->vehicle_type;
+        $vehicle_category = $request->vehicle_category;
+        $car_description = $request->car_description;
        
-        $no_of_day = $request->no_of_day;
+        $no_of_day1 = $request->days_1;
+        $no_of_day3 = $request->days_3;
+        $no_of_day7 = $request->days_7;
+        $no_of_day30 = $request->days_30;
+
         $no_of_seats = $request->no_of_seats;
         $no_of_km = $request->no_of_km;
-        $price = $request->price;
 
+        $price1 = $request->price_1;
+        $price3 = $request->price_3;
+        $price7 = $request->price_7;
+        $price30 = $request->price_30;
+        
+        $total_price = $request->total_price;
         $image = $request->file('image');
 
         if($image){
             $destinationPath = base_path() .'/public/uploads/cars';
             $file_name = time().".".$image->extension();
-            $file->move($destinationPath,$file_name);
+            $image->move($destinationPath,$file_name);
         }
 
-        $insert_cars = DB::table('car_management')->insert(['title'=>$title,'sub_title'=>$sub_title,'no_of_day'=>$no_of_day,'no_of_seats'=>$no_of_seats,'no_of_day'=>$no_of_km,'price'=>$price,'created_at'=>date('Y-m-d H:i:s')]);
-
+        $insert_cars_id = DB::table('car_management')->insertGetId(['title'=>$title,'vehicle_type'=>$vehicle_type,'vehicle_category'=>$vehicle_category,'image'=>$file_name,'manual_text'=>'manual_text','no_of_seats'=>$no_of_seats,'no_of_km'=>$no_of_km,'car_description'=>$car_description,'created_at'=>date('Y-m-d H:i:s')]);
+        $car_price = $request->price;
+        
+        
+        $insert_cars1 = DB::table('car_price_days')->insert(['car_days_id'=>'1','car_id'=>$insert_cars_id,'no_of_day'=>'1 Day','price'=>$car_price[0],'created_at'=>date('Y-m-d H:i:s')]);
+        $insert_cars2 = DB::table('car_price_days')->insert(['car_days_id'=>'2','car_id'=>$insert_cars_id,'no_of_day'=>'3+ Day','price'=>$car_price[1],'created_at'=>date('Y-m-d H:i:s')]);
+        $insert_cars3 = DB::table('car_price_days')->insert(['car_days_id'=>'3','car_id'=>$insert_cars_id,'no_of_day'=>'7+ Day','price'=>$car_price[2],'created_at'=>date('Y-m-d H:i:s')]);
+        $insert_cars4 = DB::table('car_price_days')->insert(['car_days_id'=>'4','car_id'=>$insert_cars_id,'no_of_day'=>'30+ Day','price'=>$car_price[3],'created_at'=>date('Y-m-d H:i:s')]);
+        
+        if ($insert_cars1 && $insert_cars2 && $insert_cars3 && $insert_cars4) {
+                
+            return response()->json(['status' => 'success', 'msg' => 'Car has been added successfully.']);
+           
+        } else {
+            return response()->json(['status' => 'error', 'msg' => 'OOPs! Some internal issue occured.']);
+            
+        }
         
     }
+
+    public function change_car_status(Request $request){
+
+        $update_car_status = DB::table('car_management')->where("id",$request->car_id)->update(['status'=>$request->status]);
+        
+        return response()->json(['success'=>'Car status change successfully.']);
+        
+        
+    }
+
+    public function edit_cars(Request $request){
+        $data['car_list'] = DB::table('car_management')->where("id",$request->car_id)->get()->first();
+        $data['category_list'] = DB::table('categories')->get();
+        //print_r($data['car_list']);die;
+        return view("admin/car/edit_cars")->with($data);
+    }
+
+    public function update_cars(Request $request){
+
+        $title = $request->title;
+        $vehicle_type = $request->vehicle_type;
+        $vehicle_category = $request->vehicle_category;
+        $car_description = $request->car_description;
+       
+        $no_of_day = $request->no_of_day;
+        $no_of_seats = $request->no_of_seats;
+        $no_of_km = $request->no_of_km;
+        $price = $request->price;
+        $total_price = $request->total_price;
+        $image = $request->file('image');
+
+        $car_data = DB::table('car_management')->where("id",$request->car_id)->get()->first();
+        if($image){
+            $destinationPath = base_path() .'/public/uploads/cars';
+            $file_name = time().".".$image->extension();
+            $image->move($destinationPath,$file_name);
+            $update_car = DB::table('car_management')->where("id",$request->car_id)->update(['title'=>$title,'vehicle_type'=>$vehicle_type,'vehicle_category'=>$vehicle_category,'image'=>$file_name,'manual_text'=>'manual_text','no_of_seats'=>$no_of_seats,'no_of_km'=>$no_of_km,'car_description'=>$car_description]);
+        }else{
+            
+
+            $update_car = DB::table('car_management')->where("id",$request->car_id)->update(['title'=>$title,'vehicle_type'=>$vehicle_type,'vehicle_category'=>$vehicle_category,'manual_text'=>'manual_text','no_of_seats'=>$no_of_seats,'no_of_km'=>$no_of_km,'car_description'=>$car_description]);
+            
+        }
+
+        $car_price = $request->price;
+        
+             
+        $insert_cars1 = DB::table('car_price_days')->where('car_days_id',"1")->where("car_id",$request->car_id)->update(['price'=>$car_price[0]]);
+        $insert_cars2 = DB::table('car_price_days')->where('car_days_id',"2")->where("car_id",$request->car_id)->update(['price'=>$car_price[1]]);
+        $insert_cars3 = DB::table('car_price_days')->where('car_days_id',"3")->where("car_id",$request->car_id)->update(['price'=>$car_price[2]]);
+        $insert_cars4 = DB::table('car_price_days')->where('car_days_id',"4")->where("car_id",$request->car_id)->update(['price'=>$car_price[3]]);
+
+        if ($update_car || $insert_cars1 || $insert_cars2 || $insert_cars3 || $insert_cars4) {
+                
+            return response()->json(['status' => 'success', 'msg' => 'Car has been updated successfully.']);
+           
+        } else {
+            return response()->json(['status' => 'error', 'msg' => 'OOPs! Some internal issue occured.']);
+            
+        }
+        
+        
+        return redirect('admin/car_management');
+    }
+
+    public function delete_car(Request $request){
+        $res = DB::table('car_management')->where('id', '=', $request->car_id)->delete();
+
+        if ($res) {
+            return json_encode(array('status' => 'success','msg' => 'Car has been deleted successfully!'));
+        } else {
+            return json_encode(array('status' => 'error','msg' => 'Some internal issue occured.'));
+        }
+    }
+
+    public function add_language(){
+        return view("admin/language/add_language");
+        
+    }
+
+    public function submit_languages(Request $request){
+        
+        $title = $request->title;
+        $insert_languages = DB::table('language_management')->insert(['name'=>$title,'created_at'=>date('Y-m-d H:i:s')]);
+
+        if ($insert_languages) {
+                
+            return response()->json(['status' => 'success', 'msg' => 'Languages has been added successfully.']);
+           
+        } else {
+            return response()->json(['status' => 'error', 'msg' => 'OOPs! Some internal issue occured.']);
+            
+        }
+    }
+
+    public function language_management(){
+        $data["language_list"] = DB::table('language_management')->get();
+        return view("admin/language/language_management")->with($data);
+        
+    }
+
+    public function change_language_status(Request $request){
+        $update_car_status = DB::table('language_management')->where("id",$request->language_id)->update(['status'=>$request->status]);
+        
+        return response()->json(['success'=>'Language status has been changed successfully.']);
+    }
+
+    public function edit_languages(Request $request){
+        $data['language_list'] = DB::table('language_management')->where("id",$request->language_id)->get()->first();
+        //print_r($data['car_list']);die;
+        return view("admin/language/edit_languages")->with($data);
+    }
+
+    public function update_languages(Request $request){
+        $title = $request->title;
+        $update_languages = DB::table('language_management')->where("id",$request->language_id)->update(['name'=>$title]);
+
+        if ($update_languages) {
+                
+            return response()->json(['status' => 'success', 'msg' => 'Language has been updated successfully.']);
+           
+        } else {
+            return response()->json(['status' => 'error', 'msg' => 'OOPs! Some internal issue occured.']);
+            
+        }
+    }
+
+    public function delete_languages(Request $request){
+        $res = DB::table('language_management')->where('id', '=', $request->language_id)->delete();
+
+        if ($res) {
+            return json_encode(array('status' => 'success','msg' => 'Language has been deleted successfully!'));
+        } else {
+            return json_encode(array('status' => 'error','msg' => 'Some internal issue occured.'));
+        }
+    }
+
+    public function add_logos(){
+        return view("admin/logo/add_logo");
+    }
+
+    public function submit_logos(Request $request){
+
+       
+
+        $image = $request->file('image');
+
+        if($image){
+            $destinationPath = base_path() .'/public/uploads/logos';
+            $file_name = time().".".$image->extension();
+            $image->move($destinationPath,$file_name);
+        }
+
+        $insert_logos = DB::table('home_page_logos')->insert(['image'=>$file_name,'status'=>'1','created_at'=>date('Y-m-d H:i:s')]);
+        
+        
+        
+        if ($insert_logos) {
+                
+            return response()->json(['status' => 'success', 'msg' => 'Logos has been added successfully.']);
+           
+        } else {
+            return response()->json(['status' => 'error', 'msg' => 'OOPs! Some internal issue occured.']);
+            
+        }
+        
+    }
+
+    public function show_logos(){
+        $data['logo_list'] = DB::table('home_page_logos')->get();
+        return view("admin/logo/show_logo")->with($data);
+    }
+
+    public function change_logo_status(Request $request){
+        
+        $update_car_status = DB::table('home_page_logos')->where("id",$request->logo_id )->update(['status'=>$request->status]);
+        
+        return response()->json(['success'=>'Logo status change successfully.']);
+        
+        
+    }
+
+    public function edit_logos(Request $request){
+        $data['logo_list'] = DB::table('home_page_logos')->where("id",$request->logo_id)->get()->first();
+        return view("admin/logo/edit_logo")->with($data);
+    }
+
+    public function update_logos(Request $request){
+        $image = $request->file('image');
+
+        if($image){
+            $destinationPath = base_path() .'/public/uploads/logos';
+            $file_name = time().".".$image->extension();
+            $image->move($destinationPath,$file_name);
+        }
+
+        $update_logos = DB::table('home_page_logos')->where("id",$request->logo_id )->update(['image'=>$file_name]);
+        
+        
+        
+        if ($update_logos) {
+                
+            return response()->json(['status' => 'success', 'msg' => 'Logos has been updated successfully.']);
+           
+        } else {
+            return response()->json(['status' => 'error', 'msg' => 'OOPs! Some internal issue occured.']);
+            
+        }
+    }
+
+    public function delete_logos(Request $request){
+        
+        $res = DB::table('home_page_logos')->where('id', '=', $request->logo_id)->delete();
+
+        if ($res) {
+            return json_encode(array('status' => 'success','msg' => 'Logo has been deleted successfully!'));
+        } else {
+            return json_encode(array('status' => 'error','msg' => 'Some internal issue occured.'));
+        }
+    }
+
+    public function add_categories(Request $request){
+        return view("admin/Category/add_category");
+    }
+
+    public function submit_category(Request $request){
+        $cat_name = $request->cat_name;
+        
+
+        $insert_category = DB::table('categories')->insert(['cat_name'=>$cat_name,'created_at'=>date('Y-m-d H:i:s')]);
+        
+        
+        if ($insert_category) {
+                
+            return response()->json(['status' => 'success', 'msg' => 'Category has been added successfully.']);
+           
+        } else {
+            return response()->json(['status' => 'error', 'msg' => 'OOPs! Some internal issue occured.']);
+            
+        }
+        
+    }
+
+    public function show_category(Request $request){
+        $data['category_list'] = DB::table('categories')->get();
+        return view("admin/Category/show_category")->with($data);
+    }
+
+    public function change_category_status(Request $request){
+        
+        $update_category_status = DB::table('categories')->where("cat_id",$request->cat_id )->update(['status'=>$request->status]);
+        
+        return response()->json(['success'=>'Category status change successfully.']);
+        
+        
+    }
+
+    public function edit_category(Request $request){
+        $data['category_list'] = DB::table('categories')->where("cat_id",$request->cat_id )->get()->first();
+        return view("admin/Category/edit_category")->with($data);
+    }
+
+    
+
+    public function update_category(Request $request){
+        $cat_name = $request->cat_name;
+        
+
+        $insert_category = DB::table('categories')->where("cat_id",$request->cat_id)->update(['cat_name'=>$cat_name,'created_at'=>date('Y-m-d H:i:s')]);
+        
+        
+        if ($insert_category) {
+                
+            return response()->json(['status' => 'success', 'msg' => 'Category has been updated successfully.']);
+           
+        } else {
+            return response()->json(['status' => 'error', 'msg' => 'OOPs! Some internal issue occured.']);
+            
+        }
+    }
+
+    public function delete_category(Request $request){
+        
+        $res = DB::table('categories')->where('cat_id', '=', $request->cat_id)->delete();
+
+        if ($res) {
+            return json_encode(array('status' => 'success','msg' => 'Category has been deleted successfully!'));
+        } else {
+            return json_encode(array('status' => 'error','msg' => 'Some internal issue occured.'));
+        }
+    }
+
+    public function translation_management(){
+        $data['translations_en'] = DB::table('translation')->where("id","1")->get()->first();
+        //print_r($data['translations_en']->translation_text);
+        $data['texts'] = json_decode($data['translations_en']->translation_text);
+        $data['texts_booking'] = json_decode($data['translations_en']->booking_texts);
+        $data['car_data'] = DB::table('car_management')->get();
+        //print_r($data['texts']);die;
+
+        //print_r($data['texts']);die;
+        
+        return view("admin/Translations/translation_management")->with($data);
+    }
+
+    public function update_translations(Request $request){
+        $data = $request->all();
+        //print_r($request->data);die;
+        //var_dump($request->all());die;
+        //echo json_encode($request->input());die;
+        $update_translations_en = DB::table('translation')->where("id","1")->update(['translation_text'=>$data]);
+
+        //$update_translations_it = DB::table('translation')->where("id","2")->update(['Menu1'=>$request->Menu1_it,'Menu2'=>$request->Menu2_it,'pickup_location_text'=>$request->pickup_location_it,'drop_off_location'=>$request->dropoff_location_it,'pickup_date'=>$request->pickup_date_it,'book_btn'=>$request->dropoff_date_it,'brand_section_heading'=>$request->brand_section_heading_it,'best_deal_heading'=>$request->best_deal_heading_it,'best_deal_content'=>$request->best_deal_content_it,'Day'=>$request->Day_it,'Seater'=>$request->Seater_it,'Manual'=>$request->Manual_it,'KM'=>$request->KM_it,'More'=>$request->More_it,'created_at'=>date('Y-m-d H:i:s')]);
+
+       return response()->json(['status' => 'success', 'msg' => 'Content updated successfully']);
+    }
+
+    public function update_translationsTwo(Request $request){
+        $data = $request->all();
+        
+        $update_translations_en = DB::table('translation')->where("id","1")->update(['booking_texts'=>$data]);
+        
+
+       return response()->json(['status' => 'success', 'msg' => 'Content updated successfully']);
+    }
+
+    public function update_car_translations(Request $request){
+        //print_r($request->car_name_it);
+        $car_ids = $request->car_id;
+        $car_name = $request->car_name_it;
+        $car_description = $request->car_description_it;
+        $i = 0;
+        foreach ($car_ids as $c_id) {
+            $update_translations_en = DB::table('car_management')->where("id",$c_id)->update(['title_it'=>$car_name[$i],'car_description_it'=>$car_description[$i]]);
+            $i++;
+        }
+        return response()->json(['status' => 'success', 'msg' => 'Content updated successfully']);
+    }
+
+    public function payment_transaction(Request $request){
+        $from_date = $request->from_date;
+        $to_date = $request->to_date;
+        
+        if($from_date && $to_date){
+            if($request->status == 'Completed'){
+
+                $data['payment_transaction'] = DB::table('payment_transaction')->whereBetween('created_at',[$from_date.'%', $to_date.'%'])->where('payment_status','1')->orderby('created_at', 'DESC')->get();
+            }else{
+                if($request->status == 'Pending'){
+                    $data['payment_transaction'] = DB::table('payment_transaction')->where('payment_status','0')->whereBetween('created_at',[$from_date.'%', $to_date.'%'])->orderby('created_at', 'DESC')->get();
+                }else{
+                    
+                      $data['payment_transaction'] = DB::table('payment_transaction')->whereBetween('created_at',[$from_date.'%', $to_date.'%'])->orderby('created_at', 'DESC')->get();
+                        
+                }
+            }
+        }else{
+            if($request->status == 'Completed'){
+
+                $data['payment_transaction'] = DB::table('payment_transaction')->where('payment_status','1')->orderby('created_at', 'DESC')->get();
+            }else{
+                if($request->status == 'Pending'){
+                    $data['payment_transaction'] = DB::table('payment_transaction')->where('payment_status','0')->orderby('created_at', 'DESC')->get();
+                }else{
+                    
+                      $data['payment_transaction'] = DB::table('payment_transaction')->orderby('created_at', 'DESC')->get();
+                        
+                }
+            }
+            
+        }
+        
+        return view("admin/payment/payment")->with($data);
+        
+    }
+
+     public function change_payment_status(Request $request){
+        
+        $update_payment_status = DB::table('payment_transaction')->where("payment_id",$request->payment_id )->update(['payment_status'=>$request->payment_status]);
+        
+        return response()->json(['success'=>'Payment status completed successfully.']);
+        
+        
+    }
+
+    public function search_date_filter(Request $request){
+        $from_date = date("Y-m-d",strtotime($request->from_date));
+        $to_date = date("Y-m-d",strtotime($request->to_date));
+
+        $data['from_date'] = $from_date;
+        $data['to_date'] = $to_date;
+        
+        return view("admin/dashboard_search")->with($data);
+
+    }
+
+    
 
 }
